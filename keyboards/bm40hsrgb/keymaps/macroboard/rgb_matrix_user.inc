@@ -172,7 +172,6 @@ bool testArray1[11][4] = {
   {1,1,1,1,},
   {1,0,0,1,},
   {1,0,0,1,},
-}
 };
 
 static bool FRACTAL(effect_params_t* params) {
@@ -215,18 +214,18 @@ static bool FRACTAL(effect_params_t* params) {
 
 
     // random fill first column
-  for (uint8_t col = 0; col < 2; col++) {
+  for (uint8_t col = 0; col < 10; col++) {
     for (uint8_t row = 0; row < 4; row++) {
       halfArray[0][row] = testArray1[col+1][row];
     }
     for (uint8_t row = 1; row < 4; row++) {
-      halfArray[0][row] = testArray1[col-1][row];
+      halfArray[0][row] = testArray1[col+1][row];
     }
     for (uint8_t row = 2; row < 4; row++) {
-      halfArray[0][row] = testArray1[col][row];
+      halfArray[0][row] = testArray1[col+1][row];
     }
     for (uint8_t row = 3; row < 4; row++) {
-      halfArray[0][row] = testArray1[col][row];
+      halfArray[0][row] = testArray1[col+1][row];
     }
   }
     // bottom
