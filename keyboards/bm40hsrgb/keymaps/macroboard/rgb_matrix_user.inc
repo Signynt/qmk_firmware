@@ -123,27 +123,67 @@ static bool MUSIC_ANIM(effect_params_t* params) {
 
 //BRIGHT EFFECT
 
-static bool BRIGHT_ANIM(effect_params_t* params) {
+int brightArray[4][54] = {
 
-  RGB_MATRIX_USE_LIMITS(led_min, led_max);
-
-  float wLEDs[54] = {
-    0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-    0, 0, 0, 0, 0,  0  , 0, 1, 0, 0, 0,
+  { //00
+    0,0,0,1,1,0,0,0,0,1,1,0,
+    0,0,1,0,0,1,0,0,1,0,0,1,
+    1,1,0,0,0,0,1,1,0,0,0,0,
+    0,0,0,0,0, 0 ,0,0,0,0,0,
 
       0,    0,    0,   0,   0,   0
-  };
+  },
+  { //01
+    0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,
+    0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0, 0 ,0,0,0,0,0,
 
-  for (uint8_t i = led_min; i < led_max; i++) {
-    rgb_matrix_set_color(i, 0x00, 0x00, 0x00);
+      0,    0,    0,   0,   0,   0
+  },
+  { //02
+    1,1,0,0,0,0,1,1,0,0,0,0,
+    0,0,1,0,0,1,0,0,1,0,0,1,
+    0,0,0,1,1,0,0,0,0,1,1,0,
+    0,0,0,0,0, 0 ,0,0,0,0,0,
+
+      0,    0,    0,   0,   0,   0
+  },
+  { //03
+    0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,
+    0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0, 0 ,0,0,0,0,0,
+
+      0,    0,    0,   0,   0,   0
+  },
+};
+
+uint32_t p3_timer = 0;
+uint8_t c3_frame = 0;
+
+static bool BRIGHT_ANIM(effect_params_t* params) {
+  if (p3_timer > g_rgb_timer) {
+    return false;
   }
-  for (uint16_t i = led_min; i < led_max; i++) {
-    if (wLEDs[i] == 1 ){
-      rgb_matrix_set_color(i, 0xff, 0xff, 0xff);
-    }
+
+//  HSV hsv  = rgb_matrix_config.hsv;
+//  RGB rgb = hsv_to_rgb(hsv);
+  RGB_MATRIX_USE_LIMITS(led_min, led_max);
+  for (int k = led_min; k < led_max; k++) {
+      if (brightArray[c3_frame][k]) {
+          rgb_matrix_set_color(k, 70, 70, 100);
+      } else {
+          rgb_matrix_set_color(k, 0x00, 0x00, 0x00);
+      }
   }
+
+  if (led_max == DRIVER_LED_TOTAL) {
+    p3_timer = g_rgb_timer + 400;
+    c3_frame = c3_frame == 3 ? 0 : c3_frame + 1;
+    dprintf("c3_frame = %d\n", c3_frame);
+  }
+
   return led_max < DRIVER_LED_TOTAL;
 }
 
@@ -153,25 +193,30 @@ static bool BRIGHT_ANIM(effect_params_t* params) {
 
 uint32_t f_timer = 0;
 
-uint8_t halfArray[6][4];
-uint8_t fullArray[12][4];
+uint8_t keyboardArray[12][4];
 
-uint8_t halfbottom[3];
-uint8_t fullbottom[6];
+uint8_t sliceArray[1][4];
+
+uint8_t interArray[15][4];
+
 uint8_t displArray[54];
 
-bool testArray1[11][4] = {
+bool GrafikArray[15][4] = {
   {1,1,1,1},
+  {1,0,1,0,},
+  {1,1,1,1,},
+  {0,0,0,0,},
+  {1,1,1,1,},
+  {0,1,0,1,},
+  {0,1,1,1,},
+  {0,0,0,0,},
+  {1,1,1,1,},
+  {1,0,0,1,},
+  {1,0,0,1,},
+  {0,0,0,0,},
+  {0,1,1,1,},
   {0,1,0,1,},
   {1,1,1,1,},
-  {0,0,0,0,},
-  {1,1,1,1,},
-  {1,0,1,0,},
-  {1,1,1,0,},
-  {0,0,0,0,},
-  {1,1,1,1,},
-  {1,0,0,1,},
-  {1,0,0,1,},
 };
 
 static bool FRACTAL(effect_params_t* params) {
@@ -200,69 +245,38 @@ static bool FRACTAL(effect_params_t* params) {
   if (led_max == DRIVER_LED_TOTAL) {
     f_timer = g_rgb_timer + f_speed;
 
-    // move columns
-    for (uint8_t col = 5; col > 0; col--) {
+    for (uint8_t col = 0; col < 15; col++) {
         for (uint8_t row = 0; row < 4; row++) {
-            halfArray[col][row] = halfArray[col-1][row];
+            interArray[col][row] = GrafikArray[col][row];
         }
     }
-    //bottom
-    for (uint8_t col = 2; col > 0; col--) {
-        halfbottom[col] = halfbottom[col-1];
-    }
 
-
-
-    // random fill first column
-  for (uint8_t col = 0; col < 10; col++) {
-    for (uint8_t row = 0; row < 4; row++) {
-      halfArray[0][row] = testArray1[col+1][row];
-    }
-    for (uint8_t row = 1; row < 4; row++) {
-      halfArray[0][row] = testArray1[col+1][row];
-    }
-    for (uint8_t row = 2; row < 4; row++) {
-      halfArray[0][row] = testArray1[col+1][row];
-    }
-    for (uint8_t row = 3; row < 4; row++) {
-      halfArray[0][row] = testArray1[col+1][row];
-    }
-  }
-    // bottom
-//    halfbottom[0] = 1;
-
-
-
-
-    // transfer to big array
-    for (uint8_t col = 0; col < 6; col++) {
-        for (uint8_t row = 0; row < 4; row++){
-            fullArray[5 - col][row] = halfArray[col][row];
-            fullArray[6 + col][row] = halfArray[col][row];
+    for (uint8_t col = 0; col < 15; col++) {
+        for (uint8_t row = 0; row < 4; row++) {
+            interArray[col][row] = interArray[col+1][row];
         }
     }
-    //bottom
-    for (uint8_t col = 0; col < 3; col++){
-      fullbottom[2 - col] = halfbottom[col];
-      fullbottom[3 + col] = halfbottom[col];
+
+    for (uint8_t col = 0; col < 1; col++) {
+      for (uint8_t row = 0; row < 4; row++) {
+        sliceArray[col][row] = interArray[col][row];
+      }
     }
 
+    for (uint8_t col = 0; col < 1; col++) {
+      for (uint8_t row = 0; row < 4; row++) {
+        keyboardArray[col][row] = sliceArray[col][row];
+      }
+    }
 
-
-    // transfer to matrix array
     uint8_t k = 0;
     for (uint8_t row = 0; row < 4; row++) {
         for (uint8_t col = 0; col < 12; col++) {
-              displArray[k] = fullArray[col][row];
+              displArray[k] = keyboardArray[col][row];
               k++;
         }
     }
-    //bottom
-    uint8_t l = 48;
-    for (uint8_t col = 0; col < 6; col++) {
-        displArray[l] = fullbottom[col];
-        l++;
-    }
+
   }
 
   return led_max < DRIVER_LED_TOTAL;

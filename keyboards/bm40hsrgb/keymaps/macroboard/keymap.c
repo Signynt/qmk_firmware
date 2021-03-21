@@ -62,7 +62,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     case VOL1:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F1));
+          tap_code16(MEH(KC_F1));
           levelOne = true;
           levelTwo = false;
           levelThree = false;
@@ -80,7 +80,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL2:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F2));
+          tap_code16(MEH(KC_F2));
           levelOne = false;
           levelTwo = true;
           levelThree = false;
@@ -97,7 +97,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL3:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F3));
+          tap_code16(MEH(KC_F3));
           levelOne = false;
           levelTwo = false;
           levelThree = true;
@@ -114,7 +114,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL4:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F4));
+          tap_code16(MEH(KC_F4));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -131,7 +131,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL5:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F5));
+          tap_code16(MEH(KC_F5));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -148,7 +148,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL6:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F6));
+          tap_code16(MEH(KC_F6));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -165,7 +165,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL7:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F7));
+          tap_code16(MEH(KC_F7));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -182,7 +182,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL8:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F8));
+          tap_code16(MEH(KC_F8));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -199,7 +199,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL9:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F9));
+          tap_code16(MEH(KC_F9));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -216,7 +216,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case VOL10:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F10));
+          tap_code16(MEH(KC_F10));
           levelOne = false;
           levelTwo = false;
           levelThree = false;
@@ -233,7 +233,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case OUTPUT:
         if (record->event.pressed) {
-          tap_code16(HYPR(KC_F11));
+          tap_code16(MEH(KC_F11));
           output = !output;
         } else {
         }
@@ -459,7 +459,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TO(SOUND),          KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,
     KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,
     TO(BASE),         KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,
-    TO(NUM),              KC_NO,              KC_NO,              KC_NO,              KC_F14,                       KC_F13,                       KC_F15,             KC_NO,              KC_NO,              KC_NO,              KC_NO
+    TO(NUM),              KC_NO,              KC_NO,              KC_NO,              MEH(KC_LBRC),                       MEH(KC_EQL),                       MEH(KC_RBRC),             KC_NO,              KC_NO,              KC_NO,              KC_NO
   ),
   [NUM] = LAYOUT_planck_mit(
     TO(SOUND),          KC_EQL,             KC_P7,              KC_P8,              KC_P9,              KC_BSPC,            KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,              KC_NO,
