@@ -1,4 +1,4 @@
-// qmk flash -kb bm40hsrgb -km signynt_windows
+// qmk flash -kb bm40hsrgb -km signynt
 
 /* Copyright 2021 Vincenzo Mitchell Barroso
  *
