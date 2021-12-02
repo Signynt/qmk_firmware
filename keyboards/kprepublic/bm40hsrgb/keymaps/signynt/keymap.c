@@ -1,4 +1,4 @@
-// qmk flash -kb bm40hsrgb -km signynt
+// qmk flash -kb kprepublic/bm40hsrgb -km signynt
 
 /* Copyright 2021 Vincenzo Mitchell Barroso
  *
@@ -64,6 +64,10 @@ void matrix_scan_user(void) {
     }
   }
 }
+
+// Optional LED layers to indicate the currently active layers. To activate remove the two indicated lines.
+
+/* remove this line to enable LEDs (1/2)
 
 //layer led colors
 
@@ -170,6 +174,8 @@ if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
 
 }
 
+*/ //remove this line to enable leds (2/2)
+
 //tap dance declarations
 enum {
     TD_MEDIA, TD_SCREEN,
@@ -183,9 +189,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 #define KC_TD(TD_VARIABLE) TD(TD_VARIABLE)
 
-//--------------------------------------------------------------------------------------------------------
+//keyboard layers
 
-//base
+//base layer
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_planck_mit(
@@ -198,8 +204,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //layers
   [NAVR] = LAYOUT_planck_mit(
     KC_LALT,              KC_RST,            KC_NO,             KC_NO,              KC_NO,            KC_NO,             C(S(KC_Z)),        C(A(KC_LEFT)),     C(KC_X),           C(KC_C),           C(A(KC_RGHT)),     KC_LALT,
-    KC_LSFT,              G(S(C(KC_F1))),    G(S(C(KC_F3))),    G(S(C(KC_F4))),     G(S(C(KC_F2))),   KC_NO,             KC_CLCK,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           KC_LSFT,
-    KC_LCTL,              KC_NO,             KC_ALGR,           KC_NO,              G(S(C(KC_F5))),   KC_NO,             KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            KC_LCTL,
+    KC_LSFT,              KC_NO,             KC_LSFT,           KC_LCTRL,           KC_LALT,          KC_NO,             KC_CLCK,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           KC_LSFT,
+    KC_LCTL,              KC_NO,             KC_ALGR,           KC_NO,              KC_NO,            KC_NO,             KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            KC_LCTL,
     TG(GAME),             KC_NO,             KC_NO,             KC_NO,              KC_NO,                     KC_ENT,                      KC_BSPC,           KC_DEL,            KC_NO,             C(G(KC_LEFT)),     C(G(KC_RIGHT))
   ),
   [MEDR] = LAYOUT_planck_mit(
