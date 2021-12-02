@@ -62,7 +62,7 @@ Provides access to all essential navigation keys, comfortably under your home ro
 
 Bottom right keys are used to swap between Virtual Desktops. You might need to modify these to fit your OS.
 
-![img](https://i.imgur.com/daKxxFz.png)
+![img](https://i.imgur.com/M69h0eu.png)
 
 
 
