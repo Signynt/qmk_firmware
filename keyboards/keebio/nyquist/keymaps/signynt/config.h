@@ -1,0 +1,3 @@
+#define TAPPING_TOGGLE 2
+#define COMBO_COUNT 8
+#define FORCE_NKRO
