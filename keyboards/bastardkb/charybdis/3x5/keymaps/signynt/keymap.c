@@ -42,7 +42,7 @@ qmk generate-autocorrect-data autocorrect_dictionary.txt -kb bastardkb/charybdis
 #define Y_SPOT G(A(S(KC_S))) // Yabai: Spotify Scratchpad
 #define Y_FIND G(A(S(KC_F))) // Yabai: Finder Scratchpad
 #define A_SFW G(A(S(KC_H))) // Yabai: Swap Focused Window to Clockwise Screen
-#define A_RR KC_TD(TD_RR) // Yabai: Make Window Fill Space (One Tap) or Reset Yabai (Two Taps)
+#define A_RR MEH(KC_X) // Yabai: Make Window Fill Space (One Tap)
 #define BCK C(KC_LBRC) // Navigate Back
 #define SL G(KC_LEFT) // Move a Space Left
 #define SR G(KC_RIGHT) // Move a Space Right
@@ -76,7 +76,19 @@ qmk generate-autocorrect-data autocorrect_dictionary.txt -kb bastardkb/charybdis
 #define TILD_CTL LCTL_T(KC_TILD)
 
 //define layers
-enum layers {BASE, POINTER, MEDR, NAVR, NSSL, FUNL, MOUS, NSL, GAME, SECGAME, STEN};
+enum layers {
+    BASE,
+    POINTER,
+    MEDR,
+    NAVR,
+    NSSL,
+    FUNL,
+    MOUS,
+    NSL,
+    GAME,
+    SECGAME,
+//  STEN
+};
 
 //Trackball Settings
 
@@ -108,13 +120,12 @@ void matrix_scan_kb(void) {
 
 //tap dance declarations
 enum {
-  TD_SCREEN, TD_RR,
+  TD_SCREEN,
 };
 
 //tap dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
     [TD_SCREEN] = ACTION_TAP_DANCE_DOUBLE( (G(S(KC_S))) , S(C(KC_4)) ),
-    [TD_RR] = ACTION_TAP_DANCE_DOUBLE( MEH(KC_X) , MEH(KC_Z) ), // Reset Raise
 };
 
 //intercept mod taps
@@ -159,32 +170,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 // Activate or deactivate Plover when the stenography layer is toggled
-bool sten_was_active = false;  // Track whether the STEN (stenography) layer was active
-layer_state_t layer_state_set_user(layer_state_t state) {
-    bool sten_is_active = layer_state_cmp(state, STEN);
-    // Check if the STEN layer was toggled (either activated or deactivated)
-    if (sten_is_active != sten_was_active) {
-        // Send your keystrokes when the STEN layer is toggled
-        register_code(KC_D);
-        register_code(KC_F);
-        register_code(KC_V);
-        register_code(KC_TAB);
-        register_code(KC_K);
-        register_code(KC_COMM);
-
-        unregister_code(KC_D);
-        unregister_code(KC_F);
-        unregister_code(KC_V);
-        unregister_code(KC_TAB);
-        unregister_code(KC_K);
-        unregister_code(KC_COMM);
-    }
-
-    // Update the state tracking
-    sten_was_active = sten_is_active;
-
-    return state;
-}
+//      bool sten_was_active = false;  // Track whether the STEN (stenography) layer was active
+//      layer_state_t layer_state_set_user(layer_state_t state) {
+//          bool sten_is_active = layer_state_cmp(state, STEN);
+//          // Check if the STEN layer was toggled (either activated or deactivated)
+//          if (sten_is_active != sten_was_active) {
+//              // Send your keystrokes when the STEN layer is toggled
+//              register_code(KC_D);
+//              register_code(KC_F);
+//              register_code(KC_V);
+//              register_code(KC_TAB);
+//              register_code(KC_K);
+//              register_code(KC_COMM);
+//      
+//              unregister_code(KC_D);
+//              unregister_code(KC_F);
+//              unregister_code(KC_V);
+//              unregister_code(KC_TAB);
+//              unregister_code(KC_K);
+//              unregister_code(KC_COMM);
+//          }
+//      
+//          // Update the state tracking
+//          sten_was_active = sten_is_active;
+//      
+//          return state;
+//      }
 
 
 // clang-format off
@@ -216,11 +227,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [NAVR] = LAYOUT_charybdis_3x5(
   // ╭───────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
-       KC_LGUI,  KC_NO,  KC_NO,  KC_NO,  KC_NO,     CAPSWRD,  TAB_L,  TAB_D,  TAB_U,  TAB_R,
+       KC_LGUI,  KC_NO,  KC_NO,  KC_NO,  KC_NO,     CW_TOGG,  TAB_L,  TAB_D,  TAB_U,  TAB_R,
   // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-       KC_LGUI,KC_LSFT,KC_LCTL,KC_LALT,  KC_NO,     KC_CLCK,KC_LEFT,KC_DOWN,  KC_UP,KC_RGHT,
+       KC_LGUI,KC_LSFT,KC_LCTL,KC_LALT,  KC_NO,     KC_CAPS,KC_LEFT,KC_DOWN,  KC_UP,KC_RGHT,
   // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-       KC_LCTL,  KC_NO,TG(STEN), KC_NO,AC_TOGG,      KC_INS,KC_HOME,KC_PGDN,KC_PGUP, KC_END,
+       KC_LCTL,  KC_NO,  KC_NO, KC_NO,AC_TOGG,      KC_INS,KC_HOME,KC_PGDN,KC_PGUP, KC_END,
   // ╰───────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
                       TG(GAME),  KC_NO, KC_ENT,      KC_ENT, KC_DEL
   //                 ╰───────────────────────────╯ ╰──────────────────╯
@@ -309,17 +320,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                          KC_TAB,   KC_0,  KC_NO,      KC_ENT,KC_BSPC
   //                 ╰───────────────────────────╯ ╰──────────────────╯
   ),
-  [STEN] = LAYOUT_charybdis_3x5(
-  // ╭───────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
-         KC_Q,    KC_W,   KC_E,   KC_R,   KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,    KC_P,
-  // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-         KC_A,    KC_S,   KC_D,   KC_F,   KC_G,       KC_H,    KC_J,   KC_K,   KC_L, KC_QUOT,
-  // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-         KC_Z,    KC_X,   KC_C,   KC_V,   KC_B,       KC_N,    KC_M,KC_COMM, KC_DOT, KC_SLSH,
-  // ╰───────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
-                      TG(STEN), KC_SPC, KC_TAB,     KC_ENT, KC_BSPC
-  //                 ╰───────────────────────────╯ ╰──────────────────╯
-  ),
+//        [STEN] = LAYOUT_charybdis_3x5(
+//        // ╭───────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
+//               KC_Q,    KC_W,   KC_E,   KC_R,   KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,    KC_P,
+//        // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
+//               KC_A,    KC_S,   KC_D,   KC_F,   KC_G,       KC_H,    KC_J,   KC_K,   KC_L, KC_QUOT,
+//        // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
+//               KC_Z,    KC_X,   KC_C,   KC_V,   KC_B,       KC_N,    KC_M,KC_COMM, KC_DOT, KC_SLSH,
+//        // ╰───────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
+//                            TG(STEN), KC_SPC, KC_TAB,     KC_ENT, KC_BSPC
+//        //                 ╰───────────────────────────╯ ╰──────────────────╯
+//        ),
 };
 
 // clang-format on

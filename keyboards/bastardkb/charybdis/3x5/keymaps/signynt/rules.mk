@@ -2,3 +2,5 @@ CAPS_WORD_ENABLE = yes
 TAP_DANCE_ENABLE = yes
 AUTOCORRECT_ENABLE = yes
 # NKRO_ENABLE = yes
+
+KEYBOARD_SHARED_EP = yes # This saves space

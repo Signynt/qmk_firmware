@@ -39,7 +39,7 @@
 
 #define TAPPING_TERM 160
 // #define PERMISSIVE_HOLD
-#define IGNORE_MOD_TAP_INTERRUPT
+// #define IGNORE_MOD_TAP_INTERRUPT
 // #define BILATERAL_COMBINATIONS
 
 //Trackball settings
@@ -50,28 +50,33 @@
 #define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS 400
 #define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD 0
 
+// Save space
+#undef SPLIT_POINTING_ENABLE
+#undef POINTING_DEVICE_RIGHT
+
 /* RGB Matrix. */
 
-#ifdef RGB_MATRIX_ENABLE
-// Disable control of RGB matrix by keycodes (must use firmware implementation
-// to control the feature).
-#    define RGB_MATRIX_DISABLE_KEYCODES
-
-// Limit maximum brightness to keep power consumption reasonable, and avoid
-// disconnects.
-#    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
-#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 64
-
-// Rainbow swirl as startup mode.
-#    define ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
-#    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_LEFT_RIGHT
-
-// Slow swirl at startup.
-#    define RGB_MATRIX_STARTUP_SPD 32
-
-// Startup values.
-#    define RGB_MATRIX_STARTUP_HUE 0
-#    define RGB_MATRIX_STARTUP_SAT 255
-#    define RGB_MATRIX_STARTUP_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS
-#    define RGB_MATRIX_STARTUP_HSV RGB_MATRIX_STARTUP_HUE, RGB_MATRIX_STARTUP_SAT, RGB_MATRIX_STARTUP_VAL
-#endif  // RGB_MATRIX_ENABLE
+//      #ifdef RGB_MATRIX_ENABLE
+//      // Disable control of RGB matrix by keycodes (must use firmware implementation
+//      // to control the feature).
+//      #    define RGB_MATRIX_DISABLE_KEYCODES
+//      
+//      // Limit maximum brightness to keep power consumption reasonable, and avoid
+//      // disconnects.
+//      #    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
+//      #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 64
+//      
+//      // Rainbow swirl as startup mode.
+//      #    define ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
+//      #    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_LEFT_RIGHT
+//      
+//      // Slow swirl at startup.
+//      #    define RGB_MATRIX_STARTUP_SPD 32
+//      
+//      // Startup values.
+//      #    define RGB_MATRIX_STARTUP_HUE 0
+//      #    define RGB_MATRIX_STARTUP_SAT 255
+//      #    define RGB_MATRIX_STARTUP_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS
+//      #    define RGB_MATRIX_STARTUP_HSV RGB_MATRIX_STARTUP_HUE, RGB_MATRIX_STARTUP_SAT, RGB_MATRIX_STARTUP_VAL
+//      #endif  // RGB_MATRIX_ENABLE
+//      
