@@ -1,20 +1,32 @@
-// qmk flash -kb idobo -km bonnies_schreibwerk
+// qmk flash -kb idobao/id75/v2 -km bonnies_schreibwerk
 
-
-//  .----------------.  .----------------.  .-----------------. .-----------------. .----------------.
-//  | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-//  | |   ______     | || |     ____     | || | ____  _____  | || | ____  _____  | || |  ____  ____  | |
-//  | |  |_   _ \    | || |   .'    `.   | || ||_   \|_   _| | || ||_   \|_   _| | || | |_  _||_  _| | |
-//  | |    | |_) |   | || |  /  .--.  \  | || |  |   \ | |   | || |  |   \ | |   | || |   \ \  / /   | |
-//  | |    |  __'.   | || |  | |    | |  | || |  | |\ \| |   | || |  | |\ \| |   | || |    \ \/ /    | |
-//  | |   _| |__) |  | || |  \  `--'  /  | || | _| |_\   |_  | || | _| |_\   |_  | || |    _|  |_    | |
-//  | |  |_______/   | || |   `.____.'   | || ||_____|\____| | || ||_____|\____| | || |   |______|   | |
-//  | |              | || |              | || |              | || |              | || |              | |
-//  | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
-//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 /*
- * Author:  Simon Bonnie
- * Date:    31.01.2022
+
+               -+*#%@@@@@%#*+=:
+             +@@%**===--===*%@@*
+            +@*.              @#
+            +%      =*       .@@@#*=-:
+             %+     ##        =%@@@@@@@%#*=:
+              +#.  .@=            ::-==**#@@@#+:
+               -%= -@                      .-+%@@#+-.
+                .*#+#                           :=#@@#=
+                  -#=                               :+%@#:
+                    +%.                                :*@*.                                  .*
+                     :@.                                 :*@:                                  +
+       :*@@@@%*.      +*                                   -@:                           :.           :=+=.
+     .#@%=:.::+%=     .@.                                   =@.  .=#%%%+     +%%%#+  .. #@%@*. .-    =@%*#@
+     +@+     :-:%+     +*                                    %= +@@*.  +#  *%@#--+%@ +=*@: :#@ =*    +*  :@
+     =@      @@@@#     =@                                    %= @*      *# *@+    .@:=#@+    %-=#   :*%+%@*
+      @:     :%@@+     =@                                   *@.-@.      :@:=@     *% .@@:    @+.@-  +@@@%-
+      =#.              #%                                 -%#:  +#-:...=%+ :@     +*  @+    .@. %%   -#@@*:
+       -#%+-.       .=%@-  :=.                        :=*%#:     .=++*+=:   .         .         .-     --+%@#*=:.
+         .-+#%#*+*#%@%+.    =##=.                :=*%%*=-.                                                 .-+#@@@%#*++=--:.
+              .:---.           -+************###*+-:                                                             :-=*#%%@@@@+
+
+
+    Author:  Simon Bonnie
+    Date:    24.05.2023
+
  */
 #include QMK_KEYBOARD_H
 
@@ -24,7 +36,7 @@ enum layer_names {
     CAPS,           /* SHIFT-Key */
     SPECIAL,        /* Funtion-Key */
     MOUSE,          /* Mouse layer */
-    MIDI            /* MIDI-Layer */
+//    MIDI            /* MIDI-Layer */
 };
 
 // Eigene Ausgaben
@@ -45,7 +57,7 @@ void rgb_matrix_indicators_user(void) {
         }
     }
 }*/
-/*
+
 //  RGB LIGHTING
 // Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
 const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -70,7 +82,7 @@ const rgblight_segment_t PROGMEM my_mouse_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_capslock_layer,
     my_numpad_layer,
-    my_midi_layer,
+//    my_midi_layer,
     my_mouse_layer
 );
 
@@ -86,12 +98,10 @@ bool led_update_user(led_t led_state) {
 // Numpad
 layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(1, layer_state_cmp(state, SPECIAL));
-    rgblight_set_layer_state(2, layer_state_cmp(state, MIDI));
-    rgblight_set_layer_state(3, layer_state_cmp(state, MOUSE));
+//    rgblight_set_layer_state(2, layer_state_cmp(state, MIDI));
+    rgblight_set_layer_state(2, layer_state_cmp(state, MOUSE));
     return state;
 }
-
-*/
 
 /*bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (record->event.pressed) {
@@ -130,8 +140,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // FN-Reihe
     [SPECIAL] = LAYOUT_ortho_5x15(
-        TO(BASE),               KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,   KC_PERC,  KC_CIRC,    KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RPRN,    RESET,                  KC_F7,      KC_F8,      KC_F9,    \
-        TG(MIDI),               _______,    _______,    KC_UP,      _______,  _______,  _______,    KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,    KC_PENT,                KC_F4,      KC_F5,      KC_F6,    \
+        TO(BASE),               KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,   KC_PERC,  KC_CIRC,    KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RPRN,    QK_BOOT,                KC_F7,      KC_F8,      KC_F9,    \
+        TG(BASE),               _______,    _______,    KC_UP,      _______,  _______,  _______,    KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,    KC_PENT,                KC_F4,      KC_F5,      KC_F6,    \
         LM(SPECIAL, MOD_LSFT),  _______,    KC_LEFT,    KC_DOWN,    KC_RIGHT, _______,  _______,    KC_KP_4,  KC_KP_5,  KC_KP_6,  _______,    LM(SPECIAL, MOD_RSFT),  KC_F1,      KC_F2,      KC_F3,    \
         _______,                _______,    _______,    _______,    _______,  _______,  _______,    KC_KP_1,  KC_KP_2,  KC_KP_3,  _______,    _______,                KC_F10,     KC_F11,     KC_F12,   \
         _______,                KC_BRID,    KC_BRIU,    _______,    _______,  KC_MPLY,  KC_DEL,     KC_KP_0,  _______,  KC_PGUP,  KC_PGDN,    MO(MOUSE),              KC_MPRV,    KC_MUTE,    KC_MNXT   \
@@ -142,15 +152,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    \
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    KC_WH_U,    _______,    KC_WH_D,    \
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    KC_BTN1,    KC_MS_U,    KC_BTN2,    \
-        _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    KC_MS_L,    KC_MS_D,    KC_MS_R     \
+        RGB_TOG,    RGB_RMOD,   RGB_MOD,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    RGB_HUD,    RGB_HUI,    KC_MS_L,    KC_MS_D,    KC_MS_R     \
     ),
-    [MIDI] = LAYOUT_ortho_5x15(
+/*    [MIDI] = LAYOUT_ortho_5x15(
         TG(MIDI),   MI_Cs_3,    MI_Ds_3,    XXXXXXX,    MI_Fs_3,    MI_Gs_3,    MI_As_3,    XXXXXXX,    MI_Cs_4,    MI_Ds_4,    XXXXXXX,    MI_Fs_4,    MI_Gs_4,    MI_As_4,    XXXXXXX,    \
         MI_B_2,     MI_C_3,     MI_D_3,     MI_E_3,     MI_F_3,     MI_G_3,     MI_A_3,     MI_B_3,     MI_C_4,     MI_D_4,     MI_E_4,     MI_F_4,     MI_G_4,     MI_A_4,     MI_B_4,     \
         XXXXXXX,    MI_Cs_1,    MI_Ds_1,    XXXXXXX,    MI_Fs_1,    MI_Gs_1,    MI_As_1,    XXXXXXX,    MI_Cs_2,    MI_Ds_2,    XXXXXXX,    MI_Fs_2,    MI_Gs_2,    MI_As_2,    XXXXXXX,    \
         MI_B,       MI_C_1,     MI_D_1,     MI_E_1,     MI_F_1,     MI_G_1,     MI_A_1,     MI_B_1,     MI_C_2,     MI_D_2,     MI_E_2,     MI_F_2,     MI_G_2,     MI_A_2,     MI_B_2,     \
         MI_OCTD,    MI_VELD,    MI_VEL_8,   MI_LEG,     MI_SUS,     MI_SUS,     MI_ALLOFF,  MI_SUS,     MI_LEG,     MI_OCT_2,   XXXXXXX,    MI_OCTU,    MI_TRNSD,   MI_TRNS_0,  MI_TRNSU    \
-    )
+)*/
 };
 /*
 [LAYER] = LAYOUT_ortho_5x15(

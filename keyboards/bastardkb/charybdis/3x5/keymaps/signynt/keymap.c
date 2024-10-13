@@ -87,36 +87,7 @@ enum layers {
     NSL,
     GAME,
     SECGAME,
-//  STEN
 };
-
-//Trackball Settings
-
-#ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-static uint16_t auto_pointer_layer_timer = 0;
-#endif
-
-#ifdef POINTING_DEVICE_ENABLE
-#    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (abs(mouse_report.x) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD || abs(mouse_report.y) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD) {
-        if (auto_pointer_layer_timer == 0) {
-            layer_on(POINTER);
-        }
-        auto_pointer_layer_timer = timer_read();
-    }
-    return mouse_report;
-}
-
-void matrix_scan_kb(void) {
-    if (auto_pointer_layer_timer != 0 && TIMER_DIFF_16(timer_read(), auto_pointer_layer_timer) >= CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS) {
-        auto_pointer_layer_timer = 0;
-        layer_off(POINTER);
-    }
-    matrix_scan_user();
-}
-#    endif  // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-#endif
 
 //tap dance declarations
 enum {
@@ -128,7 +99,18 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_SCREEN] = ACTION_TAP_DANCE_DOUBLE( (G(S(KC_S))) , S(C(KC_4)) ),
 };
 
-//intercept mod taps
+//set up combos for mouse keys
+const uint16_t PROGMEM mouse1_combo[] = {KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM mouse2_combo[] = {KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM scroll_combo[] = {KC_DOT, KC_COMM, COMBO_END};
+
+combo_t key_combos[] = {
+    COMBO(mouse1_combo, KC_BTN1),
+    COMBO(mouse2_combo, KC_BTN2),
+    COMBO(scroll_combo, DR_SCRL),
+};
+
+//intercept mod taps because it doesn't support certain keycodes
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case COLN_SFT:
@@ -168,37 +150,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
-
-// Activate or deactivate Plover when the stenography layer is toggled
-//      bool sten_was_active = false;  // Track whether the STEN (stenography) layer was active
-//      layer_state_t layer_state_set_user(layer_state_t state) {
-//          bool sten_is_active = layer_state_cmp(state, STEN);
-//          // Check if the STEN layer was toggled (either activated or deactivated)
-//          if (sten_is_active != sten_was_active) {
-//              // Send your keystrokes when the STEN layer is toggled
-//              register_code(KC_D);
-//              register_code(KC_F);
-//              register_code(KC_V);
-//              register_code(KC_TAB);
-//              register_code(KC_K);
-//              register_code(KC_COMM);
-//      
-//              unregister_code(KC_D);
-//              unregister_code(KC_F);
-//              unregister_code(KC_V);
-//              unregister_code(KC_TAB);
-//              unregister_code(KC_K);
-//              unregister_code(KC_COMM);
-//          }
-//      
-//          // Update the state tracking
-//          sten_was_active = sten_is_active;
-//      
-//          return state;
-//      }
-
-
-// clang-format off
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_charybdis_3x5(
@@ -320,17 +271,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                          KC_TAB,   KC_0,  KC_NO,      KC_ENT,KC_BSPC
   //                 ╰───────────────────────────╯ ╰──────────────────╯
   ),
-//        [STEN] = LAYOUT_charybdis_3x5(
-//        // ╭───────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
-//               KC_Q,    KC_W,   KC_E,   KC_R,   KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,    KC_P,
-//        // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-//               KC_A,    KC_S,   KC_D,   KC_F,   KC_G,       KC_H,    KC_J,   KC_K,   KC_L, KC_QUOT,
-//        // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-//               KC_Z,    KC_X,   KC_C,   KC_V,   KC_B,       KC_N,    KC_M,KC_COMM, KC_DOT, KC_SLSH,
-//        // ╰───────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
-//                            TG(STEN), KC_SPC, KC_TAB,     KC_ENT, KC_BSPC
-//        //                 ╰───────────────────────────╯ ╰──────────────────╯
-//        ),
 };
 
 // clang-format on
