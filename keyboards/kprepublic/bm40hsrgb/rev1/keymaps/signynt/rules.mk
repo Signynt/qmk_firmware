@@ -1,11 +1,16 @@
-#rules
-
-MOUSEKEY_ENABLE = yes # Mouse keys
-<<<<<<< HEAD
-BOOTMAGIC_ENABLE = lite
-=======
-BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
->>>>>>> master
-EXTRAKEY_ENABLE = yes # Audio control and System control
+CAPS_WORD_ENABLE = yes
 TAP_DANCE_ENABLE = yes
-#RGB_MATRIX_ENABLE = no
+#AUTOCORRECT_ENABLE = yes
+COMBO_ENABLE = yes
+NKRO_ENABLE = yes
+#RGBLIGHT_ENABLE = yes
+
+LTO_ENABLE = yes
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+MOUSEKEY_ENABLE = no
+# EXTRAKEY_ENABLE = no
+SPACE_CADET_ENABLE = no
+GRAVE_ESC_ENABLE = no 
+MAGIC_ENABLE = no
+# AVR_USE_MINIMAL_PRINTF = yes

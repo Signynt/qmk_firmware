@@ -25,9 +25,11 @@
 //#define RGB_MATRIX_STARTUP_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS
 //#define RGBLIGHT_LIMIT_VAL 10
 
-#ifdef RGB_MATRIX_ENABLE
+#define TAPPING_TERM 160
+#define PERMISSIVE_HOLD
 
-#define TAPPING_TERM 200
+
+#ifdef RGB_MATRIX_ENABLE
 
 //--------------------------------------------------------------------------------------------------------
 

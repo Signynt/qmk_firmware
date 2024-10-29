@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
-// qmk flash -kb kprepublic/bm40hsrgb -km signynt
-
->>>>>>> master
-/* Copyright 2021 Vincenzo Mitchell Barroso
+/* 
+qmk flash -kb kprepublic/bm40hsrgb/rev1 -km signynt
+ * Copyright 2021 Vincenzo Mitchell Barroso
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,267 +25,251 @@
 #define KC_HUI RGB_HUI
 #define KC_SAI RGB_SAI
 #define KC_VAI RGB_VAI
+#define KC_TD(TD_VARIABLE) TD(TD_VARIABLE)
+#define ESC_MEDR LT(MEDR, KC_ESC)
+#define SPC_NAVR LT(NAVR, KC_SPC)
+#define TAB_MOUS LT(MOUS, KC_TAB)
+#define ENT_NSSL LT(NSSL, KC_ENT)
+#define BSPC_NSL LT(NSL, KC_BSPC)
+#define Y_TERM G(A(S(KC_T))) // Yabai: Terminal Scratchpad
+#define Y_BROW G(A(S(KC_B))) // Yabai: Browser Scratchpad
+#define Y_SPOT G(A(S(KC_S))) // Yabai: Spotify Scratchpad
+#define Y_FIND G(A(S(KC_F))) // Yabai: Finder Scratchpad
+#define A_SFW G(A(S(KC_H))) // Yabai: Swap Focused Window to Clockwise Screen
+#define A_RR MEH(KC_X) // Yabai: Make Window Fill Space (One Tap)
+#define BCK C(KC_LBRC) // Navigate Back
+#define SL G(KC_LEFT) // Move a Space Left
+#define SR G(KC_RIGHT) // Move a Space Right
+#define MC G(KC_UP) // Mission Control
+#define SCRS KC_TD(TD_SCREEN) // Screenshot to Clipboard (One Tap) or to Desktop (Two Taps)
+#define ST MEH(KC_EQL) // Shade: Toggle On/Off
+#define SD MEH(KC_LBRC) // Shade: Brightness Up
+#define SU MEH(KC_RBRC) // Shade: Brightness Down
+#define DR_SCRL KC_NO // Dragscroll
+#define DPI_U RGB_TOG // Increase Trackball DPI
+#define DPI_D RGB_MOD // Decrease Trackball DPI
+#define THR_R C(G(KC_RIGHT)) //Throw the Active Window to the Space to the Right
+#define THR_L C(G(KC_LEFT)) //Throw the Active Window to the Space to the Right
+#define TAB_L C(S(KC_LEFT)) // Switch to the Tab to the Left
+#define TAB_R C(S(KC_RIGHT)) // Switch to the Tab to the Right
+#define TAB_U C(S(KC_UP)) // Switch to the Tab Above
+#define TAB_D C(S(KC_DOWN)) // Switch to the Tab Below
+#define Q_ALT LALT_T(KC_Q) // Mod Tap for the Left Alt Key
+#define A_SFT LSFT_T(KC_A) // Mod Tap for the Left Shift Key
+#define Z_CTL LCTL_T(KC_Z) // Mod Tap for the Left Ctl Key
+#define P_ALT RALT_T(KC_P) // Mod Tap for the Right Alt Key
+#define QUOT_SFT RSFT_T(KC_QUOT) // Mod Tap for the Right Shift Key
+#define SLSH_CTL RCTL_T(KC_SLSH) // Mod Tap for the Right Ctl Key
+#define LPRN_ALT LALT_T(KC_LPRN)
+#define COLN_SFT LSFT_T(KC_COLN)
+#define GRV_CTL LCTL_T(KC_GRV)
+#define RBRC_ALT RALT_T(KC_RBRC)
+#define RCBR_SFT RSFT_T(KC_RCBR)
+#define SLSH_CTL RCTL_T(KC_SLSH)
+#define LCBR_ALT LALT_T(KC_LCBR)
+#define TILD_CTL LCTL_T(KC_TILD)
 
 //define layers
-enum layers {BASE, MEDR, NAVR, NSSL, NSL, FUNL, GAME, SECGAME};
-
-enum custom_keycodes {
-  CMD_TAB = SAFE_RANGE,
-  THROW_R,
-  THROW_L,
+enum layers {
+    BASE,
+    MEDR,
+    NAVR,
+    NSSL,
+    FUNL,
+    MOUS,
+    NSL,
+    GAME,
+    SECGAME,
 };
 
-<<<<<<< HEAD
-//macros
-=======
-//command tab
->>>>>>> master
-
-bool is_cmd_tab_active = false;
-uint16_t cmd_tab_timer = 0;
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-
-//command tab
-
-    case CMD_TAB:
-      if (record->event.pressed) {
-        if (!is_cmd_tab_active) {
-          is_cmd_tab_active = true;
-          register_code(KC_LCTL);
-        }
-        cmd_tab_timer = timer_read();
-        register_code(KC_TAB);
-      } else {
-        unregister_code(KC_TAB);
-      }
-      break;
-
-// throw window to the right
-
-    case THROW_R:
-      if (record->event.pressed) {
-        tap_code16(C(G(KC_RIGHT)));
-        tap_code16(C(G(KC_RIGHT)));
-      }
-
-// throw window to the left
-
-    case THROW_L:
-      if (record->event.pressed) {
-        tap_code16(C(G(KC_LEFT)));
-        tap_code16(C(G(KC_LEFT)));
-      }
-
-  }
-  return true;
-}
-
-void matrix_scan_user(void) {
-  if (is_cmd_tab_active) {
-    if (timer_elapsed(cmd_tab_timer) > 500) {
-      unregister_code(KC_LCTL);
-      is_cmd_tab_active = false;
-    }
-  }
-}
-
-// Optional LED layers to indicate the currently active layers. To activate remove the two indicated lines.
-
-/* remove this line to enable LEDs (1/2)
-
-//layer led colors
-
-<<<<<<< HEAD
-=======
-void rgb_matrix_indicators_user(void) {
-
-//game indicators
-
-if(IS_LAYER_ON(GAME)) {
-  rgb_matrix_set_color(11, 0, 40, 50);
-}
-
-if(IS_LAYER_ON(SECGAME)) {
-  rgb_matrix_set_color(11, 50, 0, 0);
-}
-
-//layer indicators
-
-if(IS_LAYER_ON(NAVR)) {
-  rgb_matrix_set_color(40, 0, 40, 50);
-
-  rgb_matrix_set_color(19, 0, 40, 50);
-  rgb_matrix_set_color(20, 0, 40, 50);
-  rgb_matrix_set_color(21, 0, 40, 50);
-  rgb_matrix_set_color(22, 0, 40, 50);
-}
-
-if(IS_LAYER_ON(MEDR)) {
-  rgb_matrix_set_color(39, 50, 10, 20);
-
-  rgb_matrix_set_color(19, 50, 10, 20);
-
-  rgb_matrix_set_color(22, 50, 10, 20);
-
-  rgb_matrix_set_color(42, 50, 10, 20);
-}
-
-if(IS_LAYER_ON(FUNL)) {
-  rgb_matrix_set_color(43, 50, 0, 0);
-
-  rgb_matrix_set_color(1, 50, 0, 0);
-  rgb_matrix_set_color(2, 50, 0, 0);
-  rgb_matrix_set_color(3, 50, 0, 0);
-  rgb_matrix_set_color(4, 50, 0, 0);
-
-  rgb_matrix_set_color(13, 50, 0, 0);
-  rgb_matrix_set_color(14, 50, 0, 0);
-  rgb_matrix_set_color(15, 50, 0, 0);
-  rgb_matrix_set_color(16, 50, 0, 0);
-
-  rgb_matrix_set_color(25, 50, 0, 0);
-  rgb_matrix_set_color(26, 50, 0, 0);
-  rgb_matrix_set_color(27, 50, 0, 0);
-  rgb_matrix_set_color(28, 50, 0, 0);
-}
-
-if(IS_LAYER_ON(NSL)) {
-  rgb_matrix_set_color(42, 10, 0, 50);
-
-  rgb_matrix_set_color(2, 10, 0, 50);
-  rgb_matrix_set_color(3, 10, 0, 50);
-  rgb_matrix_set_color(4, 10, 0, 50);
-
-  rgb_matrix_set_color(14, 10, 0, 50);
-  rgb_matrix_set_color(15, 10, 0, 50);
-  rgb_matrix_set_color(16, 10, 0, 50);
-
-  rgb_matrix_set_color(26, 10, 0, 50);
-  rgb_matrix_set_color(27, 10, 0, 50);
-  rgb_matrix_set_color(28, 10, 0, 50);
-
-  rgb_matrix_set_color(38, 10, 0, 50);
-  rgb_matrix_set_color(39, 10, 0, 50);
-  rgb_matrix_set_color(40, 10, 0, 50);
-}
-
-if(IS_LAYER_ON(NSSL)) {
-  rgb_matrix_set_color(41, 0, 50, 1.9);
-
-  rgb_matrix_set_color(1, 0, 50, 1.9);
-  rgb_matrix_set_color(2, 0, 50, 1.9);
-  rgb_matrix_set_color(3, 0, 50, 1.9);
-  rgb_matrix_set_color(4, 0, 50, 1.9);
-  rgb_matrix_set_color(5, 0, 50, 1.9);
-
-  rgb_matrix_set_color(13, 0, 50, 1.9);
-  rgb_matrix_set_color(14, 0, 50, 1.9);
-  rgb_matrix_set_color(15, 0, 50, 1.9);
-  rgb_matrix_set_color(16, 0, 50, 1.9);
-  rgb_matrix_set_color(17, 0, 50, 1.9);
-
-  rgb_matrix_set_color(25, 0, 50, 1.9);
-  rgb_matrix_set_color(26, 0, 50, 1.9);
-  rgb_matrix_set_color(27, 0, 50, 1.9);
-  rgb_matrix_set_color(28, 0, 50, 1.9);
-  rgb_matrix_set_color(29, 0, 50, 1.9);
-
-}
-
-//capslock leds
-
-if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
-    rgb_matrix_set_color_all(50, 15.6, 0);
-  }
-
-}
-
-*/ //remove this line to enable leds (2/2)
-
->>>>>>> master
 //tap dance declarations
 enum {
-    TD_MEDIA, TD_SCREEN,
+  TD_SCREEN,
 };
 
 //tap dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_MEDIA] = ACTION_TAP_DANCE_DOUBLE( KC_MPLY , KC_MNXT ),
+tap_dance_action_t tap_dance_actions[] = {
     [TD_SCREEN] = ACTION_TAP_DANCE_DOUBLE( (G(S(KC_S))) , S(C(KC_4)) ),
 };
 
-#define KC_TD(TD_VARIABLE) TD(TD_VARIABLE)
+//set up combos for mouse keys
+const uint16_t PROGMEM mouse1_combo[] = {KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM mouse2_combo[] = {KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM scroll_combo[] = {KC_DOT, KC_COMM, COMBO_END};
 
-//keyboard layers
+combo_t key_combos[] = {
+    COMBO(mouse1_combo, KC_BTN1),
+    COMBO(mouse2_combo, KC_BTN2),
+    COMBO(scroll_combo, DR_SCRL),
+};
 
-//base layer
+//intercept mod taps because it doesn't support certain keycodes
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case COLN_SFT:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_COLN);
+                return false;
+            }
+            break;
+
+        case LPRN_ALT:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_LPRN);
+                return false;
+            }
+            break;
+
+        case RCBR_SFT:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_RCBR);
+                return false;
+            }
+            break;
+
+        case LCBR_ALT:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_LCBR);
+                return false;
+            }
+            break;
+
+        case GRV_CTL:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_GRV);
+                return false;
+            }
+            break;
+    }
+    return true;
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_planck_mit(
-    KC_LALT,              KC_Q,              KC_W,              KC_E,              KC_R,              KC_T,              KC_Y,              KC_U,              KC_I,              KC_O,              KC_P,              KC_LALT,
-    KC_LSFT,              KC_A,              KC_S,              KC_D,              KC_F,              KC_G,              KC_H,              KC_J,              KC_K,              KC_L,              KC_QUOT,           KC_LSFT,
-    KC_LCTL,              KC_Z,              KC_X,              KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           KC_DOT,            KC_SLSH,           KC_LCTL,
-<<<<<<< HEAD
-    G(A(S(KC_H))),        KC_TD(TD_SCREEN),  KC_ESC,            LT(MEDR, KC_TAB),  LT(NAVR, KC_SPC),      LT(NSSL, KC_ENT),                 LT(NSL, KC_BSPC),  LT(FUNL, KC_DEL),  KC_LGUI,           KC_TD(TD_MEDIA),   CMD_TAB
-=======
-    G(KC_TAB),            KC_TD(TD_SCREEN),  KC_ESC,            LT(MEDR, KC_TAB),  LT(NAVR, KC_SPC),      LT(NSSL, KC_ENT),                 LT(NSL, KC_BSPC),  LT(FUNL, KC_DEL),  KC_LGUI,           KC_TD(TD_MEDIA),   CMD_TAB
->>>>>>> master
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         Q_ALT,   KC_W,   KC_E,   KC_R,   KC_T,   KC_NO,   KC_NO,   KC_Y,    KC_U,   KC_I,   KC_O,   P_ALT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         A_SFT,   KC_S,   KC_D,   KC_F,   KC_G,   KC_NO,   KC_NO,   KC_H,    KC_J,   KC_K,   KC_L,QUOT_SFT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         Z_CTL,   KC_X,   KC_C,   KC_V,   KC_B,   KC_NO,   KC_NO,   KC_N,    KC_M,KC_COMM, KC_DOT,SLSH_CTL,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_NO, KC_NO,ESC_MEDR,SPC_NAVR,TAB_MOUS,      KC_NO,   ENT_NSSL,BSPC_NSL,  KC_NO,  KC_NO,   KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
   ),
 
-//layers
   [NAVR] = LAYOUT_planck_mit(
-<<<<<<< HEAD
-    KC_LALT,              G(A(S(KC_COMM))),  G(A(S(KC_DOT))),   G(A(S(KC_T))),      G(A(S(KC_X))),    A(S(KC_SPC)),      C(S(KC_Z)),        C(S(KC_LEFT)),     C(KC_X),           C(KC_C),           C(S(KC_RGHT)),     KC_LALT,
-    KC_LSFT,              KC_NO,             KC_LSFT,           KC_LCTRL,           KC_LALT,          KC_NO,             KC_CLCK,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           KC_LSFT,
-    KC_LCTL,              G(S(C(KC_F1))),    G(S(C(KC_F3))),    G(S(C(KC_F4))),     G(S(C(KC_F2))),   KC_NO,             KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            KC_LCTL,
-    TG(GAME),             KC_NO,             KC_NO,             KC_NO,              KC_NO,                     KC_ENT,                      KC_BSPC,           KC_DEL,            KC_NO,             THROW_L,           THROW_R
-=======
-    KC_LALT,              KC_RST,            KC_NO,             KC_NO,              KC_NO,            KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_LALT,
-    KC_LSFT,              KC_NO,             KC_LSFT,           KC_LCTRL,           KC_LALT,          KC_NO,             KC_CLCK,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           KC_LSFT,
-    KC_LCTL,              KC_NO,             KC_ALGR,           KC_NO,              KC_NO,            KC_NO,             KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            KC_LCTL,
-    TG(GAME),             KC_NO,             KC_NO,             KC_NO,              KC_NO,                     KC_ENT,                      KC_BSPC,           KC_DEL,            KC_NO,             C(G(KC_LEFT)),     C(G(KC_RIGHT))
->>>>>>> master
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+       KC_LGUI,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,   CW_TOGG,  TAB_L,  TAB_D,  TAB_U,  TAB_R,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+       KC_LGUI,KC_LSFT,KC_LCTL,KC_LALT,  KC_NO,   KC_NO,   KC_NO,   KC_CAPS,KC_LEFT,KC_DOWN,  KC_UP,KC_RGHT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+       KC_LCTL,  KC_NO,  KC_NO, KC_NO, AC_TOGG,   KC_NO,   KC_NO,   KC_INS,KC_HOME,KC_PGDN,KC_PGUP, KC_END,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_NO, KC_NO,TG(GAME), KC_NO,  KC_ENT,       KC_NO,         KC_ENT, KC_DEL,  KC_NO, KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
   ),
-  [MEDR] = LAYOUT_planck_mit(
-    KC_LALT,              KC_RST,            KC_NO,             KC_NO,              KC_NO,            KC_NO,             KC_TOG,            KC_MOD,            KC_HUI,            KC_SAI,            KC_VAI,            KC_LALT,
-    KC_LSFT,              KC_NO,             KC_NO,             KC_NO,              KC_NO,            KC_NO,             KC_NO,             KC_MPRV,           KC_VOLD,           KC_VOLU,           KC_MNXT,           KC_LSFT,
-<<<<<<< HEAD
-    KC_LCTL,              KC_NO,             KC_NO,             KC_NO,              KC_NO,            KC_NO,             KC_NO,             MEH(KC_EQL),       MEH(KC_LBRC),      MEH(KC_RBRC),      RGB_VAI,           KC_LCTL,
-=======
-    KC_LCTL,              KC_NO,             KC_NO,             KC_NO,              KC_NO,            KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_LCTL,
->>>>>>> master
-    KC_NO,                KC_NO,             KC_NO,             KC_NO,              KC_NO,                     KC_MSTP,                     KC_MPLY,           KC_MUTE,           KC_NO,             KC_NO,             KC_NO
-  ),
-  [FUNL] = LAYOUT_planck_mit(
-    KC_LALT,              KC_F12,            KC_F7,             KC_F8,              KC_F9,            KC_PSCR,           KC_F15,            KC_NO,             KC_NO,             KC_NO,             KC_RST,            KC_LALT,
-    KC_LSFT,              KC_F11,            KC_F4,             KC_F5,              KC_F6,            KC_SLCK,           KC_F14,            KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_LSFT,
-    KC_LCTL,              KC_F10,            KC_F1,             KC_F2,              KC_F3,            KC_PAUS,           KC_F13,            KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_LCTL,
-    KC_NO,                KC_NO,             KC_TAB,            KC_APP,             KC_SPC,                    KC_UNDS,                     KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO
-  ),
+
   [NSL] = LAYOUT_planck_mit(
-    KC_LALT,              KC_LPRN,           KC_7,              KC_8,               KC_9,             KC_RPRN,           KC_LBRC,           KC_AMPR,           KC_ASTR,           KC_BSLS,           KC_RBRC,           KC_BSPC,
-    KC_LSFT,              KC_COLN,           KC_4,              KC_5,               KC_6,             KC_EQL,            KC_LCBR,           KC_DLR,            KC_PERC,           KC_CIRC,           KC_RCBR,           KC_LSFT,
-    KC_LCTL,              KC_GRV,            KC_1,              KC_2,               KC_3,             KC_PLUS,           KC_TILD,           KC_EXLM,           KC_COMM,           KC_DOT,            KC_SLSH,           KC_LCTL,
-    KC_NO,                KC_NO,             KC_NO,             KC_UNDS,            KC_0,                      KC_MINS,                     KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_NO
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+        LPRN_ALT,   KC_7,   KC_8,   KC_9,KC_RPRN,   KC_NO,   KC_NO,   KC_LBRC,KC_AMPR,KC_ASTR,KC_BSLS,RBRC_ALT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+        COLN_SFT,   KC_4,   KC_5,   KC_6, KC_EQL,   KC_NO,   KC_NO,   KC_LCBR, KC_DLR,KC_PERC,KC_CIRC,RCBR_SFT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         GRV_CTL,   KC_1,   KC_2,   KC_3,KC_PLUS,   KC_NO,   KC_NO,  KC_TILD,KC_EXLM,KC_COMM, KC_DOT,SLSH_CTL,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+           KC_NO,  KC_NO,  KC_UNDS, KC_0,KC_MINS,       KC_NO,       KC_MINS,  KC_NO,  KC_NO,  KC_NO,   KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
   ),
+
   [NSSL] = LAYOUT_planck_mit(
-    KC_LALT,              KC_LCBR,           KC_AMPR,           KC_ASTR,            KC_LPRN,          KC_RCBR,           KC_NO,             KC_NO,             KC_NO,             KC_NO,             KC_RST,            KC_BSPC,
-    KC_LSFT,              KC_SCLN,           KC_DLR,            KC_PERC,            KC_CIRC,          KC_PLUS,           KC_NO,             KC_MS_L,           KC_MS_D,           KC_MS_U,           KC_MS_R,           KC_LSFT,
-    KC_LCTL,              KC_TILD,           KC_EXLM,           KC_AT,              KC_HASH,          KC_PIPE,           KC_NO,             KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           KC_LCTL,
-    KC_NO,                C(A(S(KC_O))),     KC_UNDS,           KC_GT,              KC_SPC,                    KC_NO,                       KC_BTN1,           KC_BTN3,           KC_BTN2,           KC_NO,             KC_NO
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+        LCBR_ALT,KC_AMPR,KC_ASTR,KC_LPRN,KC_RCBR,   KC_NO,   KC_NO,   KC_LBRC,KC_AMPR,KC_ASTR,KC_BSLS,RBRC_ALT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_SCLN,KC_DLR, KC_PERC,KC_CIRC,KC_PLUS,   KC_NO,   KC_NO,   KC_LCBR, KC_DLR,KC_PERC,KC_CIRC,RCBR_SFT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_TILD,KC_EXLM,  KC_AT,KC_HASH,KC_PIPE,   KC_NO,   KC_NO,  KC_TILD,KC_EXLM,KC_COMM,KC_DOT,SLSH_CTL,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+           KC_NO,  KC_NO,MO(FUNL),KC_SPC,KC_MINS,       KC_NO,        KC_MINS, KC_LGUI,KC_NO, KC_NO,   KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
   ),
+
+  [FUNL] = LAYOUT_planck_mit(
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         KC_F12,  KC_F7,  KC_F8,  KC_F9,  KC_NO,   KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LALT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_F11,  KC_F4,  KC_F5,  KC_F6,  KC_NO,   KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LSFT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+         KC_F10,  KC_F1,  KC_F2,  KC_F3,  KC_NO,   KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LCTL,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,       KC_NO,       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ),
+
+  [MOUS] = LAYOUT_planck_mit(
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         Y_TERM, Y_BROW, Y_SPOT,  Y_FIND,  A_RR,   KC_NO,   KC_NO,    BCK,    SL,      MC,     MC,     SR,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          THR_L,  DPI_D,  DPI_U,  THR_R,  KC_NO,   KC_NO,   KC_NO,  KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,DR_SCRL,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          A_SFW,   SCRS,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,  KC_NO,KC_WH_L,KC_WH_D,KC_WH_U,KC_WH_R,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,       KC_NO,       KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ),
+
+  [MEDR] = LAYOUT_planck_mit(
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         KC_RST, KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,    KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,       ST,  KC_NO,     SD,     SU,  KC_NO,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,KC_MUTE,KC_MSTP,       KC_NO,       KC_MSTP, KC_MPLY,  KC_NO, KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ),
+
   [GAME] = LAYOUT_planck_mit(
-    KC_ESC,               KC_Q,              KC_W,              KC_E,               KC_R,             KC_T,              KC_Y,              KC_U,               KC_I,             KC_O,              KC_P,              TG(GAME),
-    KC_LALT,              KC_A,              KC_S,              KC_D,               KC_F,             KC_G,              KC_H,              KC_J,               KC_K,             KC_L,              KC_QUOT,           KC_VOLU,
-    KC_LSFT,              KC_Z,              KC_X,              KC_C,               KC_V,             KC_B,              KC_N,              KC_M,               KC_COMM,          KC_DOT,            KC_SLSH,           KC_VOLD,
-    KC_LCTL,              A(KC_TAB),         MO(SECGAME),       KC_TAB,             KC_SPC,             LT(SECGAME, KC_ENT),                KC_BSPC,            KC_DEL,           KC_MPRV,           KC_MPLY,           KC_MNXT
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_NO,   KC_NO,    KC_Y,   KC_U,   KC_I,   KC_O,TG(GAME),
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+        KC_LSFT,   KC_A,   KC_S,   KC_D,   KC_F,   KC_NO,   KC_NO,    KC_H,   KC_J,   KC_K,   KC_L,KC_QUOT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+        KC_LCTL,   KC_X,   KC_Z,   KC_C,   KC_V,   KC_NO,   KC_NO,    KC_N,   KC_M,KC_COMM, KC_DOT,KC_SLSH,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO, KC_TAB, KC_SPC,OSL(SECGAME),   KC_NO,      KC_ENT,KC_BSPC,  KC_NO,  KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
   ),
+
   [SECGAME] = LAYOUT_planck_mit(
-    KC_1,                 KC_2,              KC_3,              KC_4,               KC_5,             KC_6,              KC_7,              KC_8,               KC_9,             KC_0,              KC_MINS,           KC_EQL,
-    KC_F1,                KC_F2,             KC_F3,             KC_F4,              KC_F5,            KC_F6,             KC_F7,             KC_F8,              KC_F9,            KC_F10,            KC_F11,            KC_F12,
-    KC_LEFT,              KC_DOWN,           KC_UP,             KC_RGHT,            KC_NO,            KC_NO,             KC_NO,             KC_P1,              KC_P2,            KC_P3,             KC_P4,             KC_P5,
-    KC_LEFT,              KC_DOWN,           KC_UP,             KC_RGHT,            KC_NO,                     KC_NO,                       KC_P6,              KC_P7,            KC_P8,             KC_P9,             KC_P0
-  )
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+         KC_ESC,   KC_7,   KC_8,   KC_9,   KC_T,   KC_NO,   KC_NO,    KC_Y,   KC_U,   KC_I,   KC_O,TG(GAME),
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+        KC_LSFT,   KC_4,   KC_5,   KC_6,   KC_G,   KC_NO,   KC_NO,    KC_H,   KC_J,   KC_K,   KC_L,KC_QUOT,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+        KC_LCTL,   KC_1,   KC_2,   KC_3,   KC_B,   KC_NO,   KC_NO,    KC_N,   KC_M,KC_COMM, KC_DOT,KC_SLSH,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO, KC_TAB,   KC_0,  KC_NO,       KC_NO,       KC_ENT,KC_BSPC,  KC_NO,  KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ),
 };
+
+// clang-format on
+
+/* Template
+
+
+  [LAYER] = LAYOUT_planck_mit(
+  // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+  // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
+          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,      KC_NO,      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO
+  // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ),
+
+
+*/

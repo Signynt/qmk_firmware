@@ -38,8 +38,8 @@
 // #define COMBO_COUNT 8
 
 #define TAPPING_TERM 160
-// #define PERMISSIVE_HOLD
-#define HOLD_ON_OTHER_KEY_PRESS
+#define PERMISSIVE_HOLD
+// #define HOLD_ON_OTHER_KEY_PRESS
 // #define BILATERAL_COMBINATIONS
 
 //Trackball settings
