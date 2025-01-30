@@ -38,9 +38,9 @@ qmk generate-autocorrect-data autocorrect_dictionary.txt -kb bastardkb/charybdis
 #define ENT_NSSL LT(NSSL, KC_ENT)
 #define BSPC_NSL LT(NSL, KC_BSPC)
 #define Y_TERM G(A(S(KC_T))) // Yabai: Terminal Scratchpad
-#define Y_BROW G(A(S(KC_B))) // Yabai: Browser Scratchpad
+#define Y_CALE G(A(S(KC_B))) // Yabai: Calendar Scratchpad
 #define Y_SPOT G(A(S(KC_S))) // Yabai: Spotify Scratchpad
-#define Y_FIND G(A(S(KC_F))) // Yabai: Finder Scratchpad
+#define Y_WAPP G(A(S(KC_F))) // Yabai: Whatsapp Scratchpad
 #define A_SFW G(A(S(KC_H))) // Yabai: Swap Focused Window to Clockwise Screen
 #define A_RR MEH(KC_X) // Yabai: Make Window Fill Space (One Tap)
 #define BCK C(KC_LBRC) // Navigate Back
@@ -226,7 +226,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [MOUS] = LAYOUT_charybdis_3x5(
   // ╭───────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
-         Y_TERM, Y_BROW, Y_SPOT,  Y_FIND,  A_RR,         BCK,    SL,      MC,     MC,     SR,
+         Y_TERM, Y_SPOT, Y_CALE, Y_WAPP,   A_RR,         BCK,    SL,      MC,     MC,     SR,
   // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
           THR_L,  DPI_D,  DPI_U,  THR_R,  KC_NO,       KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,DR_SCRL,
   // ├───────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
