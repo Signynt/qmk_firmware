@@ -55,6 +55,8 @@
 #undef POINTING_DEVICE_RIGHT
 //#undef RGB_MATRIX_ENABLE
 
+#define NO_ACTION_ONESHOT
+
 /* RGB Matrix. */
 
 //      #ifdef RGB_MATRIX_ENABLE

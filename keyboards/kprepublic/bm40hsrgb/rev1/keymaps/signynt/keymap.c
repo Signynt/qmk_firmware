@@ -35,6 +35,7 @@ qmk flash -kb kprepublic/bm40hsrgb/rev1 -km signynt
 #define Y_CALE G(A(S(KC_B))) // Yabai: Calendar Scratchpad
 #define Y_SPOT G(A(S(KC_S))) // Yabai: Spotify Scratchpad
 #define Y_WAPP G(A(S(KC_F))) // Yabai: Whatsapp Scratchpad
+#define Y_MAIL G(A(S(KC_M))) // Yabai: Mail Scratchpad
 #define A_SFW G(A(S(KC_H))) // Yabai: Swap Focused Window to Clockwise Screen
 #define A_RR MEH(KC_X) // Yabai: Make Window Fill Space (One Tap)
 #define BCK C(KC_LBRC) // Navigate Back
@@ -207,9 +208,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [MOUS] = LAYOUT_planck_mit(
   // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
-         Y_TERM, Y_SPOT, Y_CALE, Y_WAPP,   A_RR,   KC_NO,   KC_NO,    BCK,    SL,      MC,     MC,     SR,
+         Y_TERM, Y_SPOT, Y_CALE, Y_WAPP, Y_MAIL,    KC_NO,   KC_NO,    BCK,    SL,      MC,     MC,     SR,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-          THR_L,  DPI_D,  DPI_U,  THR_R,  KC_NO,   KC_NO,   KC_NO,  KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,DR_SCRL,
+          THR_L,  DPI_D,  DPI_U,  THR_R,   A_RR,   KC_NO,   KC_NO,  KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,DR_SCRL,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
           A_SFW,   SCRS,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,  KC_NO,KC_WH_L,KC_WH_D,KC_WH_U,KC_WH_R,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
@@ -221,7 +222,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
          KC_RST, KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,    KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
+        RGB_TOG,RGB_MOD,RGB_HUI,RGB_SAI,RGB_VAI,   KC_NO,   KC_NO,    KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
           KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,       ST,  KC_NO,     SD,     SU,  KC_NO,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
@@ -235,7 +236,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
         KC_LSFT,   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,    KC_H,     KC_J,   KC_K,   KC_L,KC_COLN,KC_QUOT,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-        KC_LCTL,   KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,    KC_N,     KC_M,KC_COMM, KC_DOT,  KC_UP,KC_RCTL,
+        KC_LGUI,   KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,    KC_N,     KC_M,KC_COMM, KC_DOT,  KC_UP,KC_RGUI,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
            KC_1,   KC_2,   KC_3, KC_TAB, KC_SPC,   OSL(SECGAME),    KC_ENT,KC_BSPC,KC_LEFT,KC_DOWN,KC_RIGHT
   // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
@@ -247,7 +248,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
         KC_LSFT,   KC_4,   KC_5,   KC_6,   KC_G,   KC_NO,   KC_NO,    KC_H,   KC_J,  KC_F4,  KC_F5,  KC_F6,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-        KC_LCTL,   KC_1,   KC_2,   KC_3,   KC_B,   KC_NO,   KC_NO,    KC_N,   KC_M,  KC_F1,  KC_F2,  KC_F3,
+        KC_LGUI,   KC_1,   KC_2,   KC_3,   KC_B,   KC_NO,   KC_NO,    KC_N,   KC_M,  KC_F1,  KC_F2,  KC_F3,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
           KC_NO,  KC_NO, KC_TAB,   KC_0,  KC_NO,       KC_NO,       KC_ENT,KC_BSPC, KC_F10,  KC_NO,  KC_NO
   // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
