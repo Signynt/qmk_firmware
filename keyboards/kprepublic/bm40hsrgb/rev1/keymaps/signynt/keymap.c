@@ -20,11 +20,11 @@ qmk flash -kb kprepublic/bm40hsrgb/rev1 -km signynt
 
 // non-KC_ keycodes
 #define KC_RST QK_BOOT
-#define KC_TOG RGB_TOG
-#define KC_MOD RGB_MOD
-#define KC_HUI RGB_HUI
-#define KC_SAI RGB_SAI
-#define KC_VAI RGB_VAI
+#define KC_TOG RM_TOGG
+#define KC_MOD RM_NEXT
+#define KC_HUI RM_HUEU
+#define KC_SAI RM_SATU
+#define KC_VAI RM_VALU
 #define KC_TD(TD_VARIABLE) TD(TD_VARIABLE)
 #define ESC_MEDR LT(MEDR, KC_ESC)
 #define SPC_NAVR LT(NAVR, KC_SPC)
@@ -47,8 +47,8 @@ qmk flash -kb kprepublic/bm40hsrgb/rev1 -km signynt
 #define SD MEH(KC_LBRC) // Shade: Brightness Up
 #define SU MEH(KC_RBRC) // Shade: Brightness Down
 #define DR_SCRL KC_NO // Dragscroll
-#define DPI_U RGB_TOG // Increase Trackball DPI
-#define DPI_D RGB_MOD // Decrease Trackball DPI
+#define DPI_U KC_NO // Increase Trackball DPI
+#define DPI_D KC_NO // Decrease Trackball DPI
 #define THR_R C(G(KC_RIGHT)) //Throw the Active Window to the Space to the Right
 #define THR_L C(G(KC_LEFT)) //Throw the Active Window to the Space to the Right
 #define TAB_L C(S(KC_LEFT)) // Switch to the Tab to the Left
@@ -99,8 +99,8 @@ const uint16_t PROGMEM mouse2_combo[] = {KC_K, KC_COMM, COMBO_END};
 const uint16_t PROGMEM scroll_combo[] = {KC_DOT, KC_COMM, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(mouse1_combo, KC_BTN1),
-    COMBO(mouse2_combo, KC_BTN2),
+    COMBO(mouse1_combo, MS_BTN1),
+    COMBO(mouse2_combo, MS_BTN2),
     COMBO(scroll_combo, DR_SCRL),
 };
 
@@ -210,9 +210,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
          Y_TERM, Y_SPOT, Y_CALE, Y_WAPP, Y_MAIL,    KC_NO,   KC_NO,    BCK,    SL,      MC,     MC,     SR,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-          THR_L,  DPI_D,  DPI_U,  THR_R,   A_RR,   KC_NO,   KC_NO,  KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,DR_SCRL,
+          THR_L,  DPI_D,  DPI_U,  THR_R,   A_RR,   KC_NO,   KC_NO,  KC_NO,MS_BTN1,MS_BTN2,MS_BTN3,DR_SCRL,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-          A_SFW,   SCRS,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,  KC_NO,KC_WH_L,KC_WH_D,KC_WH_U,KC_WH_R,
+          A_SFW,   SCRS,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,  KC_NO,QK_MOUSE_WHEEL_LEFT,QK_MOUSE_WHEEL_DOWN,QK_MOUSE_WHEEL_UP,QK_MOUSE_WHEEL_RIGHT,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
           KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,       KC_NO,       KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO
   // ╰───────────────────────────────────────────────────────────────────────────────────────────────────────╯
@@ -222,7 +222,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭───────────────────────────────────────────────────────────────────────────────────────────────────────╮
          KC_RST, KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
-        RGB_TOG,RGB_MOD,RGB_HUI,RGB_SAI,RGB_VAI,   KC_NO,   KC_NO,    KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
+         KC_TOG,KC_MOD, KC_HUI, KC_SAI,  KC_VAI,   KC_NO,   KC_NO,    KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
           KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO,       ST,  KC_NO,     SD,     SU,  KC_NO,
   // ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
