@@ -19,263 +19,139 @@ qmk flash -kb keebio/nyquist/rev3 -km signynt
 
 #include QMK_KEYBOARD_H
 
-// non-KC_ keycodes
-#define KC_RST QK_BOOT
-#define KC_TOG RGB_TOG
-#define KC_MOD RGB_MOD
-#define KC_HUI RGB_HUI
-#define KC_SAI RGB_SAI
-#define KC_VAI RGB_VAI
-#define KC_TD(TD_VARIABLE) TD(TD_VARIABLE)
-#define ESC_MEDR LT(MEDR, KC_ESC)
-#define SPC_NAVR LT(NAVR, KC_SPC)
-#define TAB_MOUS LT(MOUS, KC_TAB)
-#define ENT_NSSL LT(NSSL, KC_ENT)
-#define BSPC_NSL LT(NSL, KC_BSPC)
-#define A_DMPC MEH(KC_COMM) // Amethyst: Decrease Main Pane Count
-#define A_IMPC MEH(KC_DOT) // Amethyst: Increase Main Pane Count
-#define A_CLF A(S(KC_SPC)) // Amethyst: Cycle Layout Forward
-#define A_SFW G(A(S(KC_H))) // Amethyst: Swap Focused Window to Clockwise Screen
-#define A_RR KC_TD(TD_RR) // Amethyst: Reset Amethyst (One Tap) or Reset Auto Rais (Two Taps)
-#define BCK C(KC_LBRC) // Navigate Back
-#define SL G(KC_LEFT) // Move a Space Left
-#define SR G(KC_RIGHT) // Move a Space Right
-#define MC G(KC_UP) // Mission Control
-#define SCRS KC_TD(TD_SCREEN) // Screenshot to Clipboard (One Tap) or to Desktop (Two Taps)
-#define ST MEH(KC_EQL) // Shade: Toggle On/Off
-#define SD MEH(KC_LBRC) // Shade: Brightness Up
-#define SU MEH(KC_RBRC) // Shade: Brightness Down
-#define DR_SCRL DRAGSCROLL_MODE // Dragscroll
-#define DPI_U POINTER_DEFAULT_DPI_FORWARD // Increase Trackball DPI
-#define DPI_D POINTER_DEFAULT_DPI_REVERSE // Decrease Trackball DPI
-#define THR_R C(G(KC_RIGHT)) //Throw the Active Window to the Space to the Right
-#define THR_L C(G(KC_LEFT)) //Throw the Active Window to the Space to the Right
-#define TAB_L C(S(KC_LEFT)) // Switch to the Tab to the Left
-#define TAB_R C(S(KC_RIGHT)) // Switch to the Tab to the Right
-#define TAB_U C(S(KC_UP)) // Switch to the Tab Above
-#define TAB_D C(S(KC_DOWN)) // Switch to the Tab Below
-#define Q_ALT LALT_T(KC_Q) // Mod Tap for the Left Alt Key
-#define A_SFT LSFT_T(KC_A) // Mod Tap for the Left Shift Key
-#define Z_CTL LCTL_T(KC_Z) // Mod Tap for the Left Ctl Key
-#define P_ALT RALT_T(KC_P) // Mod Tap for the Right Alt Key
-#define QUOT_SFT RSFT_T(KC_QUOT) // Mod Tap for the Right Shift Key
-#define SLSH_CTL RCTL_T(KC_SLSH) // Mod Tap for the Right Ctl Key
-#define LPRN_ALT LALT_T(KC_LPRN)
-#define COLN_SFT LSFT_T(KC_COLN)
-#define GRV_CTL LCTL_T(KC_GRV)
-#define RBRC_ALT RALT_T(KC_RBRC)
-#define RCBR_SFT RSFT_T(KC_RCBR)
-#define SLSH_CTL RCTL_T(KC_SLSH)
-#define LCBR_ALT LALT_T(KC_LCBR)
-#define TILD_CTL LCTL_T(KC_TILD)
+// Port of https://github.com/Signynt/zmk-config/blob/master/config/cygnus.keymap
+// The source keymap credits the ZMK Contributors (2020), under the MIT license.
+enum layers { BASE, NAVR, NSL, NSSL, FUNL, MOUS, MEDR, GAME, SECGAME };
+enum { TD_SCREEN };
 
-//define layers
-enum layers {BASE, POINTER, MEDR, NAVR, NSSL, FUNL, MOUS, NSL, GAME, SECGAME};
+#define Y_TERM G(A(S(KC_T)))
+#define Y_CALE G(A(S(KC_B)))
+#define Y_SPOT G(A(S(KC_Y)))
+#define Y_WAPP G(A(S(KC_F)))
+#define Y_MAIL G(A(S(KC_M)))
+#define Y_SFW  G(A(S(KC_H)))
+#define Y_RR   C(S(A(KC_X)))
+#define BCK    C(KC_LBRC)
+#define SL     G(KC_LEFT)
+#define SR     G(KC_RGHT)
+#define MC     G(KC_UP)
+#define THR_R  C(G(KC_RGHT))
+#define THR_L  C(G(KC_LEFT))
+#define TAB_L  C(S(KC_LEFT))
+#define TAB_R  C(S(KC_RGHT))
+#define TAB_U  C(S(KC_UP))
+#define TAB_D  C(S(KC_DOWN))
 
-//tap dance declarations
-enum {
-  TD_SCREEN, TD_RR
+// Mod-tap only stores an 8-bit tap keycode. Intercept these dummy taps below
+// to emit shifted symbols while retaining native QMK hold handling.
+#define LPRN_ALT LALT_T(KC_F16)
+#define COLN_SFT LSFT_T(KC_F17)
+#define RCBR_SFT LSFT_T(KC_F18)
+#define LCBR_ALT LALT_T(KC_F19)
+#define TILD_CTL LCTL_T(KC_F20)
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_SCREEN] = ACTION_TAP_DANCE_DOUBLE(G(S(KC_S)), C(S(KC_4))),
 };
 
-enum custom_keycodes {
-    ACTI_STEN = SAFE_RANGE,
+// Outer columns are explicitly disabled on every non-gaming layer.
+// Cygnus thumbs map to the three innermost bottom-row keys on each half.
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    [BASE] = LAYOUT_ortho_4x12(
+        KC_NO              , LALT_T(KC_Q)       , KC_W               , KC_E               , KC_R               , KC_T               , KC_Y               , KC_U               , KC_I               , KC_O               , LALT_T(KC_P)       , KC_NO,
+        KC_NO              , LSFT_T(KC_A)       , KC_S               , KC_D               , KC_F               , KC_G               , KC_H               , KC_J               , KC_K               , KC_L               , LSFT_T(KC_QUOT)    , KC_NO,
+        KC_NO              , LCTL_T(KC_Z)       , KC_X               , KC_C               , KC_V               , KC_B               , KC_N               , KC_M               , KC_COMM            , KC_DOT             , LCTL_T(KC_SLSH)    , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , LT(MEDR,KC_ESC)    , LT(NAVR,KC_SPC)    , LT(MOUS,KC_TAB)    , LT(NSSL,KC_ENT)    , LT(NSL,KC_BSPC)    , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [NAVR] = LAYOUT_ortho_4x12(
+        KC_NO              , KC_LGUI            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , CW_TOGG            , TAB_L              , TAB_D              , TAB_U              , TAB_R              , KC_NO,
+        KC_NO              , KC_LGUI            , KC_LSFT            , KC_LCTL            , KC_LALT            , KC_TRNS            , KC_CAPS            , KC_LEFT            , KC_DOWN            , KC_UP              , KC_RGHT            , KC_NO,
+        KC_NO              , KC_LCTL            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_INS             , KC_HOME            , KC_PGDN            , KC_PGUP            , KC_END             , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , TG(GAME)           , KC_TRNS            , KC_ENT             , KC_ENT             , KC_DEL             , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [NSL] = LAYOUT_ortho_4x12(
+        KC_NO              , LPRN_ALT           , KC_7               , KC_8               , KC_9               , KC_RPRN            , KC_LBRC            , KC_AMPR            , KC_ASTR            , KC_BSLS            , LALT_T(KC_RBRC)    , KC_NO,
+        KC_NO              , COLN_SFT           , KC_4               , KC_5               , KC_6               , KC_EQL             , KC_LCBR            , KC_DLR             , KC_PERC            , KC_CIRC            , RCBR_SFT           , KC_NO,
+        KC_NO              , LCTL_T(KC_GRV)     , KC_1               , KC_2               , KC_3               , KC_PLUS            , KC_TILD            , KC_EXLM            , KC_COMM            , KC_DOT             , LCTL_T(KC_SLSH)    , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , KC_UNDS            , KC_0               , KC_MINS            , KC_MINS            , KC_TRNS            , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [NSSL] = LAYOUT_ortho_4x12(
+        KC_NO              , LCBR_ALT           , KC_AMPR            , KC_ASTR            , KC_LPRN            , KC_RCBR            , KC_LBRC            , KC_AMPR            , KC_ASTR            , KC_BSLS            , LALT_T(KC_RBRC)    , KC_NO,
+        KC_NO              , LSFT_T(KC_SCLN)    , KC_DLR             , KC_PERC            , KC_CIRC            , KC_PLUS            , KC_LCBR            , KC_DLR             , KC_PERC            , KC_CIRC            , RCBR_SFT           , KC_NO,
+        KC_NO              , TILD_CTL           , KC_EXLM            , KC_AT              , KC_HASH            , KC_PIPE            , KC_TILD            , KC_EXLM            , KC_COMM            , KC_DOT             , LCTL_T(KC_SLSH)    , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , MO(FUNL)           , KC_SPC             , KC_MINS            , KC_MINS            , KC_LGUI            , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [FUNL] = LAYOUT_ortho_4x12(
+        KC_NO              , KC_F12             , KC_F7              , KC_F8              , KC_F9              , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_LALT            , KC_NO,
+        KC_NO              , KC_F11             , KC_F4              , KC_F5              , KC_F6              , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_LSFT            , KC_NO,
+        KC_NO              , KC_F10             , KC_F1              , KC_F2              , KC_F3              , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_LCTL            , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [MOUS] = LAYOUT_ortho_4x12(
+        KC_NO              , Y_TERM             , Y_SPOT             , Y_CALE             , Y_WAPP             , Y_MAIL             , BCK                , SL                 , MC                 , MC                 , SR                 , KC_NO,
+        KC_NO              , Y_SFW              , KC_TRNS            , KC_TRNS            , KC_TRNS            , Y_RR               , KC_TRNS            , MS_LEFT            , MS_DOWN            , MS_UP              , MS_RGHT            , KC_NO,
+        KC_NO              , THR_L              , TD(TD_SCREEN)      , KC_TRNS            , THR_R              , KC_TRNS            , KC_TRNS            , KC_TRNS            , MS_WHLD            , MS_WHLU            , KC_TRNS            , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , KC_TRNS            , KC_TRNS            , KC_TRNS            , MS_BTN1            , MS_BTN3            , MS_BTN2            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    [MEDR] = LAYOUT_ortho_4x12(
+        KC_NO              , QK_BOOT            , KC_NO              , KC_NO              , KC_NO              , KC_NO              , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_NO              , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , KC_TRNS            , KC_TRNS            , KC_NO              , KC_TRNS            , KC_MPRV            , KC_VOLD            , KC_VOLU            , KC_MNXT            , KC_NO,
+        KC_NO              , KC_F11             , KC_F2              , KC_DEL             , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_TRNS            , KC_BRID            , KC_BRIU            , KC_TRNS            , KC_NO,
+        KC_NO              , KC_NO              , KC_NO              , KC_TRNS            , KC_MUTE            , KC_MSTP            , KC_MSTP            , KC_MPLY            , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+    ),
+
+    // Expand gaming to six columns per half, restoring T/G/B to the inner
+    // left column and putting Escape/Shift/Ctrl on the outer left edge.
+    [GAME] = LAYOUT_ortho_4x12(
+        KC_ESC,  KC_Q,    KC_W,   KC_E,   KC_R,        KC_T,   KC_Y,   KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+        KC_LSFT, KC_A,    KC_S,   KC_D,   KC_F,        KC_G,   KC_H,   KC_J,    KC_K,    KC_L,    KC_QUOT, KC_ENT,
+        KC_LCTL, KC_Z,    KC_X,   KC_C,   KC_V,        KC_B,   KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+        KC_LALT, KC_LGUI, KC_NO,  KC_TAB, KC_SPC, MO(SECGAME), KC_ENT, KC_BSPC, KC_DEL,  KC_NO,   KC_NO,   KC_RCTL
+    ),
+    [SECGAME] = LAYOUT_ortho_4x12(
+        TG(GAME), KC_7,    KC_8,   KC_9,   KC_R,    KC_T,   KC_TRNS, KC_F7,   KC_F8,   KC_F9,   KC_F12,  KC_TRNS,
+        KC_LSFT,  KC_4,    KC_5,   KC_6,   KC_F,    KC_G,   KC_VOLU, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_TRNS,
+        KC_LCTL,  KC_1,    KC_2,   KC_3,   KC_V,    KC_B,   KC_VOLD, KC_F1,   KC_F2,   KC_F3,   KC_F10,  KC_TRNS,
+        KC_TRNS,  KC_TRNS, KC_NO,  KC_TAB, KC_0, KC_TRNS,   KC_ENT,  KC_BSPC, KC_RALT, KC_NO,   KC_NO,   KC_TRNS
+    ),
 };
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    // Only ZMK's &mt was customized to 160 ms; &lt retains its 200 ms default.
+    return IS_QK_MOD_TAP(keycode) ? 160 : TAPPING_TERM;
+}
 
-//tap dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_SCREEN] = ACTION_TAP_DANCE_DOUBLE( (G(S(KC_S))) , S(C(KC_4)) ),
-    [TD_RR] = ACTION_TAP_DANCE_DOUBLE( MEH(KC_Z) , MEH(KC_X) ), // Reset Raise
-};
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    // ZMK balanced mod-taps become holds on a nested press/release.
+    return IS_QK_MOD_TAP(keycode);
+}
 
-//intercept mod taps
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    // ZMK's default layer-taps are hold-preferred.
+    return IS_QK_LAYER_TAP(keycode);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint16_t tap_keycode;
     switch (keycode) {
-        case COLN_SFT:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_COLN);
-                return false;
-            }
-            break;
-
-        case LPRN_ALT:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_LPRN);
-                return false;
-            }
-            break;
-
-        case RCBR_SFT:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_RCBR);
-                return false;
-            }
-            break;
-
-        case LCBR_ALT:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_LCBR);
-                return false;
-            }
-            break;
-
-        case GRV_CTL:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_GRV);
-                return false;
-            }
-            break;
-
-        case ACTI_STEN:
-            if (record->event.pressed) {
-                register_code(KC_D);
-                register_code(KC_F);
-                register_code(KC_V);
-                register_code(KC_TAB);
-                register_code(KC_K);
-                register_code(KC_COMM);
-
-                unregister_code(KC_D);
-                unregister_code(KC_F);
-                unregister_code(KC_V);
-                unregister_code(KC_TAB);
-                unregister_code(KC_K);
-                unregister_code(KC_COMM);
-            }
-            break;
+        case LPRN_ALT: tap_keycode = KC_LPRN; break;
+        case COLN_SFT: tap_keycode = KC_COLN; break;
+        case RCBR_SFT: tap_keycode = KC_RCBR; break;
+        case LCBR_ALT: tap_keycode = KC_LCBR; break;
+        case TILD_CTL: tap_keycode = KC_TILD; break;
+        default: return true;
+    }
+    if (record->tap.count) {
+        if (record->event.pressed) {
+            tap_code16(tap_keycode);
+        }
+        return false;
     }
     return true;
 }
-
-//--------------------------------------------------------------------------------------------------------
-
-
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [BASE] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-          KC_A,   KC_S,   KC_D,   KC_F,   KC_G,    KC_NO,  KC_G,    KC_H,    KC_J,   KC_K,   KC_L, KC_QUOT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,    KC_NO,  KC_B,    KC_N,    KC_M,KC_COMM, KC_DOT, KC_SLSH,
-  // ├───────────────────────────────────────────┤                ├─────────────────────────────────────────────┤
-          KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,    KC_NO,  KC_T,    KC_Y,    KC_U,   KC_I,   KC_O,    KC_P,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-     ACTI_STEN,  KC_NO, KC_ESC, KC_SPC, KC_TAB,    KC_NO,KC_ENT, KC_BSPC, KC_ESC,   KC_NO,  KC_NO,  KC_RST
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [NAVR] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-       KC_LGUI,  KC_NO,  KC_NO,  KC_NO,  KC_NO,    KC_NO, KC_NO, CAPSWRD,  TAB_L,  TAB_D,  TAB_U,  TAB_R,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-       KC_LGUI,KC_LSFT,KC_LCTL,KC_LALT,  KC_NO,    KC_NO, KC_NO, KC_CLCK,KC_LEFT,KC_DOWN,  KC_UP,KC_RGHT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-       KC_LCTL,  KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO, KC_NO,  KC_INS,KC_HOME,KC_PGDN,KC_PGUP, KC_END,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,     TG(GAME),  KC_NO,  KC_ENT,    KC_NO, KC_NO, KC_ENT, KC_DEL,           KC_NO, KC_NO,  KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [NSL] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-        LPRN_ALT,   KC_7,   KC_8,   KC_9,KC_RPRN,  KC_NO, KC_NO, KC_LBRC,KC_AMPR,KC_ASTR,KC_BSLS,RBRC_ALT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        COLN_SFT,   KC_4,   KC_5,   KC_6, KC_EQL,  KC_NO, KC_NO, KC_LCBR, KC_DLR,KC_PERC,KC_CIRC,RCBR_SFT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-         GRV_CTL,   KC_1,   KC_2,   KC_3,KC_PLUS,  KC_NO, KC_NO, KC_TILD,KC_EXLM,KC_COMM, KC_DOT,SLSH_CTL,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,          KC_UNDS, KC_0,KC_MINS,  KC_NO, KC_NO, KC_MINS, KC_NO,            KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [NSSL] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-        LCBR_ALT,KC_AMPR,KC_ASTR,KC_LPRN,KC_RCBR,  KC_NO, KC_NO, KC_LBRC,KC_AMPR,KC_ASTR,KC_BSLS,RBRC_ALT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_SCLN ,KC_DLR, KC_PERC,KC_CIRC,KC_PLUS,  KC_NO, KC_NO, KC_LCBR, KC_DLR,KC_PERC,KC_CIRC,RCBR_SFT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_TILD, KC_EXLM,  KC_AT,KC_HASH,KC_PIPE,  KC_NO, KC_NO, KC_TILD,KC_EXLM,KC_COMM,KC_DOT, SLSH_CTL,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,       MO(FUNL), KC_SPC,KC_MINS,  KC_NO, KC_NO, KC_MINS, KC_LGUI,          KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [FUNL] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-         KC_F12,  KC_F7,  KC_F8,  KC_F9,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LALT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-         KC_F11,  KC_F4,  KC_F5,  KC_F6,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LSFT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-         KC_F10,  KC_F1,  KC_F2,  KC_F3,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,KC_LCTL,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,         KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO,            KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [MOUS] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-         A_DMPC, A_IMPC,MEH(KC_T),A_CLF,   A_RR,    KC_NO, KC_NO,    BCK,    SL,      MC,     MC,     SR,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          THR_L,  KC_NO,  KC_NO,  THR_R,  KC_NO,    KC_NO, KC_NO,  KC_NO,KC_BTN1,KC_BTN2,KC_BTN3,  KC_NO,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          A_SFW,   SCRS,  KC_NO,  KC_NO,  KC_NO,    KC_NO, KC_NO,  KC_NO,KC_WH_L,KC_WH_D,KC_WH_U,KC_WH_R,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,         KC_NO,  KC_NO,  KC_NO,    KC_NO, KC_NO,  KC_NO, KC_NO,            KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [MEDR] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-         KC_RST, KC_NO,  KC_NO,  KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO,KC_MPRV,KC_VOLD,KC_VOLU,KC_MNXT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,      ST,  KC_NO,     SD,     SU,  KC_NO,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,         KC_NO,KC_MUTE,KC_MSTP,   KC_NO, KC_NO, KC_MSTP, KC_MPLY,          KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [GAME] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-         KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_NO, KC_NO,    KC_Y,   KC_U,   KC_I,   KC_O,TG(GAME),
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_LSFT,   KC_A,   KC_S,   KC_D,   KC_F,   KC_NO, KC_NO,    KC_H,   KC_J,   KC_K,   KC_L,KC_QUOT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_LCTL,   KC_X,   KC_Z,   KC_C,   KC_V,   KC_NO, KC_NO,    KC_N,   KC_M,KC_COMM, KC_DOT,KC_SLSH,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,      KC_TAB, KC_SPC,OSL(SECGAME),KC_NO, KC_NO,KC_ENT,KC_BSPC,             KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-  [SECGAME] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-         KC_ESC,   KC_7,   KC_8,   KC_9,   KC_T,   KC_NO, KC_NO,    KC_Y,   KC_U,   KC_I,   KC_O,TG(GAME),
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_LSFT,   KC_4,   KC_5,   KC_6,   KC_G,   KC_NO, KC_NO,    KC_H,   KC_J,   KC_K,   KC_L,KC_QUOT,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-        KC_LCTL,   KC_1,   KC_2,   KC_3,   KC_B,   KC_NO, KC_NO,    KC_N,   KC_M,KC_COMM, KC_DOT,KC_SLSH,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,        KC_TAB,   KC_0,  KC_NO,   KC_NO, KC_NO,  KC_ENT,KC_BSPC,           KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-};
-
-// clang-format on
-
-/* Template
-
-
-  [LAYER] = LAYOUT_ortho_4x12(
-  // ╭───────────────────────────────────────────╮               ╭─────────────────────────────────────────────╮
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-  // ├───────────────────────────────────────────┤               ├─────────────────────────────────────────────┤
-          KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-  // ╰───────────────────────────────────────────┤               ├─────────────────────────────────────────────╯
-    KC_NO, KC_NO,         KC_NO,  KC_NO,  KC_NO,   KC_NO, KC_NO,   KC_NO,  KC_NO,           KC_NO, KC_NO, KC_NO
-  //                 ╰───────────────────────────╯               ╰──────────────────╯
-  ),
-
-
-*/
