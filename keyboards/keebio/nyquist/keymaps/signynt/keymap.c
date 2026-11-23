@@ -61,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO              , LALT_T(KC_Q)       , KC_W               , KC_E               , KC_R               , KC_T               , KC_Y               , KC_U               , KC_I               , KC_O               , LALT_T(KC_P)       , KC_NO,
         KC_NO              , LSFT_T(KC_A)       , KC_S               , KC_D               , KC_F               , KC_G               , KC_H               , KC_J               , KC_K               , KC_L               , LSFT_T(KC_QUOT)    , KC_NO,
         KC_NO              , LCTL_T(KC_Z)       , KC_X               , KC_C               , KC_V               , KC_B               , KC_N               , KC_M               , KC_COMM            , KC_DOT             , LCTL_T(KC_SLSH)    , KC_NO,
-        KC_NO              , KC_NO              , KC_NO              , LT(MEDR,KC_ESC)    , LT(NAVR,KC_SPC)    , LT(MOUS,KC_TAB)    , LT(NSSL,KC_ENT)    , LT(NSL,KC_BSPC)    , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
+        KC_LCTL            , TG(GAME)           , KC_NO              , LT(MEDR,KC_ESC)    , LT(NAVR,KC_SPC)    , LT(MOUS,KC_TAB)    , LT(NSSL,KC_ENT)    , LT(NSL,KC_BSPC)    , KC_TRNS            , KC_NO              , KC_NO              , KC_NO
     ),
 
     [NAVR] = LAYOUT_ortho_4x12(
@@ -112,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_Q,    KC_W,   KC_E,   KC_R,        KC_T,   KC_Y,   KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
         KC_LSFT, KC_A,    KC_S,   KC_D,   KC_F,        KC_G,   KC_H,   KC_J,    KC_K,    KC_L,    KC_QUOT, KC_ENT,
         KC_LCTL, KC_Z,    KC_X,   KC_C,   KC_V,        KC_B,   KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-        KC_LALT, KC_LGUI, KC_NO,  KC_TAB, KC_SPC, MO(SECGAME), KC_ENT, KC_BSPC, KC_DEL,  KC_NO,   KC_NO,   KC_RCTL
+        KC_LALT, KC_LGUI, TG(GAME),  KC_TAB, KC_SPC, MO(SECGAME), KC_ENT, KC_BSPC, KC_DEL,  KC_NO,   KC_NO,   KC_RCTL
     ),
     [SECGAME] = LAYOUT_ortho_4x12(
         TG(GAME), KC_7,    KC_8,   KC_9,   KC_R,    KC_T,   KC_TRNS, KC_F7,   KC_F8,   KC_F9,   KC_F12,  KC_TRNS,
